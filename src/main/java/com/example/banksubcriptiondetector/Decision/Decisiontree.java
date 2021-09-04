@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.util.*;
 
 public class Decisiontree {
-  String[][] mainDataset;
-  Map<String, Integer> categoryMap = new HashMap<>();
-  int dataRows=0, dataColumns;
+    String[][] mainDataset;
+    Map<String, Integer> categoryMap = new HashMap<>();
+    int dataRows=0, dataColumns;
+    Node rootNode=new Node();
+    String answerUponTest;
+    boolean leaf=false;
 
     public void getDataRows(String file) throws IOException {
       BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -129,32 +132,33 @@ public class Decisiontree {
 
           double featureEntropy=0;
 
-          for(int i=1;i<rows;i++)
+          for(int i=1;i<rows;i++){
               features.add(workingDataset[i][currentColumnNumber]);
+          }
 
-          for(String branch: features){
+          // System.out.println(features);
+          for(String feature: features){
 
-              double branchFrequency=0;
+              double featureFrequency=0;
 
-              Map<String, Integer> copyCat = new HashMap<>(categoryMap);
+              Map<String, Integer> copyClassCategoryMap = new HashMap<>(categoryMap);
 
               for (int j=1;j<rows;j++){
 
-                  if(branch.equals(workingDataset[j][currentColumnNumber])){
-                      branchFrequency++;
+                  if(feature.equals(workingDataset[j][currentColumnNumber])){
+                      featureFrequency++;
 
-                      copyCat.put(workingDataset[j][dataColumns-1], copyCat.get(workingDataset[j][dataColumns-1])+1);
+                      copyClassCategoryMap.put(workingDataset[j][dataColumns-1], copyClassCategoryMap.get(workingDataset[j][dataColumns-1])+1);
                   }
               }
 
-              if(Collections.frequency(copyCat.values(), 0) == copyCat.size()-1)
+              if(Collections.frequency(copyClassCategoryMap.values(), 0) == copyClassCategoryMap.size()-1)
                   featureEntropy+=0;
 
               else
-                  featureEntropy+= calculateBranchEntropy(copyCat,branchFrequency,rows);
+                  featureEntropy+= calculateBranchEntropy(copyClassCategoryMap,featureFrequency,rows);
               
           }
-          //System.out.println("Info Gain for "+ table[0][currentColumnNumber]+": "+  d);
 
           if( (totalEntropy-featureEntropy) > maxGain){
               temp.clear();
@@ -199,10 +203,13 @@ public class Decisiontree {
       }
   }
 
-    public void parseTreeForResult(Node node, String[][] arr){
+    public String parseTreeForResult(Node node, String[][] arr){
         if(node.leaf){
             System.out.println();
-            System.out.println("Answer:"+node.decision);
+//            System.out.println("Answer:"+node.decision);
+//            answerUponTest=node.decision;
+            leaf=true;
+            return node.decision;
         }
 
         for(int i=0;i<arr[0].length-1;i++){
@@ -211,34 +218,48 @@ public class Decisiontree {
                 continue;
             }
             if(node.attribute.equals(arr[0][i])){
-
                 for (Map.Entry<String, Node> entry : node.childNodes.entrySet()) {
                     String key = entry.getKey();
                     Node nord = entry.getValue();
                     if(key.equals(arr[1][i])){
-                        parseTreeForResult(nord,arr);
+                        String dec=parseTreeForResult(nord,arr);
+                        if(leaf){
+                            return dec;
+                        }
                     }
                 }
 
             }
         }
+        return "Exceptional";
     }
 
+    public String getPrediction(String[] brr){
+        String[][] arr=new String[2][mainDataset[0].length];
+        arr[0]= mainDataset[0];
+        arr[1]= brr;
+        String res=parseTreeForResult(rootNode,arr);
+        System.out.println("Answer:"+res);
+        leaf=false;
+        return "Ok";
+    }
 
     public void StartDecisionTree(String file) throws IOException {
 
         readData(file);
 
-        Node n = createTree(mainDataset);
+        rootNode = createTree(mainDataset);
 
-        System.out.println("---The Tree--\n");
+        //System.out.println("---The Tree--\n");
 
-       printTree(n,0);
+       // printTree(n,0);
 
        String[][] arr=new String[2][mainDataset[0].length];
        arr[0]= mainDataset[0];
        arr[1]= mainDataset[18047];
-       parseTreeForResult(n,arr);
+        String res=parseTreeForResult(rootNode,arr);
+        System.out.println("Answer:"+res);
+        leaf=false;
        System.out.println(mainDataset[18047][mainDataset[0].length-1]);
 
        // System.out.println("*Number of data= "+(mainDataset.length-1));
