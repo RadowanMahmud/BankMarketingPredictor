@@ -26,14 +26,12 @@ public class implement {
                 //System.out.println(i);
                 String[] split = testline.split(",");
                 dataRows[i]=new DataRow(split);
-                if(dataRows[i].getCls().equals("yes")){
-                    yescount++;
-                }else nocount++;
+//                if(dataRows[i].getCls().equals("yes")){
+//                    yescount++;
+//                }else nocount++;
 
                 i++;
             }
-            System.out.println("Yes count is "+yescount);
-            System.out.println("No count is "+nocount);
             testreadFile.close();
         }
 
@@ -83,18 +81,16 @@ public class implement {
         return (double) me.getValue();
     }
 
-    public void RandomizeArray(){
-        Random rgen = new Random();  // Random number generator
-
-        for (int i = 0; i< dataRows.length; i++) {
-            int randomPosition = rgen.nextInt(dataRows.length);
-            DataRow temp = dataRows[i];
-            dataRows[i] = dataRows[randomPosition];
-            dataRows[randomPosition] = temp;
-        }
-
-        //  return array;
-    }
+//    public void RandomizeArray(){
+//        Random rgen = new Random();  // Random number generator
+//
+//        for (int i = 0; i< dataRows.length; i++) {
+//            int randomPosition = rgen.nextInt(dataRows.length);
+//            DataRow temp = dataRows[i];
+//            dataRows[i] = dataRows[randomPosition];
+//            dataRows[randomPosition] = temp;
+//        }
+//    }
 
     public String test(int chk,double[] test) throws IOException
     {
@@ -117,11 +113,8 @@ public class implement {
                 arr[6] = dataRows[i].getLoan();
                 arr[7] = dataRows[i].getDay_of_week();
                 arr[8] = dataRows[i].getPrevious();
-                //arr[9] = dataRows[i].getVar_rate();
                 arr[9] = dataRows[i].getPrice_idx();
                 arr[10] = dataRows[i].getConf_idx();
-//                arr[12] = dataRows[i].getEuribor3m();
-//                arr[13] = dataRows[i].getNr_employeed();
                 distance.put(dataRows[i].getCls(),calculateDistance(test, arr));
             }
             j++;
@@ -142,7 +135,6 @@ public class implement {
 
         for(Map.Entry<String, Double> m: sortedDistance.entrySet())
         {
-            // int k=Integer.parseInt(m.getKey());
             String s=m.getKey();
 
             if(s.equals("yes"))

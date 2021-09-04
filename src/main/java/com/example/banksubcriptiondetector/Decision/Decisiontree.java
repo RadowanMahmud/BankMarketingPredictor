@@ -1,42 +1,47 @@
 package com.example.banksubcriptiondetector.Decision;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
 public class Decisiontree {
-  String[][] allData;
+  String[][] mainDataset;
   Map<String, Integer> categoryMap = new HashMap<>();
-  ArrayList<String> classes = new ArrayList<>();
-
   int dataRows=0, dataColumns;
+
+  public void getDataRows(String file) throws IOException {
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
+      while ( bufferedReader.readLine()!= null) {
+          dataRows++;
+      }
+  }
 
   public void readData(String file) throws IOException {
 
+        getDataRows(file);
       BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-      String[] arr= new String[30];
-      String frow; int r=0;
-
-      while ( bufferedReader.readLine()!= null) dataRows++;
-
-      bufferedReader = new BufferedReader(new FileReader(file));
+      String[] arr= new String[15];
+      int count=0;
+      String frow;
 
       while ((frow = bufferedReader.readLine())!= null){
 
           arr = frow.split(",");
 
-          if(r!=0) categoryMap.put(arr[arr.length-1],0);
+          if(count!=0) categoryMap.put(arr[arr.length-1],0);
 
-          if(r==0) {
-              allData = new String[dataRows][arr.length];
+          if(count==0) {
+              mainDataset = new String[dataRows][arr.length];
           }
 
           for (int i=0;i<arr.length;i++){
               if(arr[i]==null){
-                  allData[r][i]="no";
-              }else allData[r][i]=arr[i];
+                  mainDataset[count][i]="no";
+              }else mainDataset[count][i]=arr[i];
           }
-          r+=1;
+          count+=1;
       }
       dataColumns=arr.length;
       bufferedReader.close();
@@ -100,24 +105,25 @@ public class Decisiontree {
       return newTable;
   }
 
-  public Node createTree(String[][] table){
+  public Node createTree(String[][] workingDataset){
 
       Node n = new Node();
-      int rows=table.length;
+      int rows=workingDataset.length;
       Set<String> temp = new HashSet<>();
-      Set<String>branches = new HashSet<>();
+      Set<String>features = new HashSet<>();
       int currentColumnNumber=0, newTColumn=1;
       double maxGain = 0.0;
       
-      double totalEntropy= calculateTotalEntropy(categoryMap,table);
+      double totalEntropy= calculateTotalEntropy(categoryMap,workingDataset);
 
       if(totalEntropy==0){
-
           n.leaf=true;
-          if(table[1][dataColumns-1]==null){
-              n.decision = "no";
+          if(workingDataset[1][dataColumns-1]==null){
+              n.decision = "yes";
           }
-          else n.decision = table[1][dataColumns-1];
+          else {
+              n.decision = workingDataset[1][dataColumns-1];
+          }
           return n;
       }
 
@@ -126,9 +132,9 @@ public class Decisiontree {
           double featureEntropy=0;
 
           for(int i=1;i<rows;i++)
-              branches.add(table[i][currentColumnNumber]);
+              features.add(workingDataset[i][currentColumnNumber]);
 
-          for(String branch: branches){
+          for(String branch: features){
 
               double branchFrequency=0;
 
@@ -136,10 +142,10 @@ public class Decisiontree {
 
               for (int j=1;j<rows;j++){
 
-                  if(branch.equals(table[j][currentColumnNumber])){
+                  if(branch.equals(workingDataset[j][currentColumnNumber])){
                       branchFrequency++;
 
-                      copyCat.put(table[j][dataColumns-1], copyCat.get(table[j][dataColumns-1])+1);
+                      copyCat.put(workingDataset[j][dataColumns-1], copyCat.get(workingDataset[j][dataColumns-1])+1);
                   }
               }
 
@@ -156,18 +162,18 @@ public class Decisiontree {
               temp.clear();
               maxGain = totalEntropy-featureEntropy;
               newTColumn = currentColumnNumber;
-              n.attribute = table[0][currentColumnNumber];
+              n.attribute = workingDataset[0][currentColumnNumber];
               n.leaf=false;
 
-              for(String s: branches)
+              for(String s: features)
                   temp.add(s);
           }
           currentColumnNumber++;
-          branches.clear();
+          features.clear();
       }
      // System.out.println("\nSelected Feature: "+n.attribute+"\n");
       for(String s: temp){
-          String[][] reducedTable= makeChildTable(table, s, newTColumn);
+          String[][] reducedTable= makeChildTable(workingDataset, s, newTColumn);
           n.nodes.put(s, createTree(reducedTable));
       }
 
@@ -195,8 +201,9 @@ public class Decisiontree {
       }
   }
 
-    public void matchMaking(Node node,String[][] arr){
+    public void parseTreeForResult(Node node, String[][] arr){
         if(node.leaf){
+            System.out.println();
             System.out.println("Answer:"+node.decision);
         }
 
@@ -211,7 +218,7 @@ public class Decisiontree {
                     String key = entry.getKey();
                     Node nord = entry.getValue();
                     if(key.equals(arr[1][i])){
-                        matchMaking(nord,arr);
+                        parseTreeForResult(nord,arr);
                     }
                 }
 
@@ -224,18 +231,18 @@ public class Decisiontree {
 
         readData(file);
 
-        Node n = createTree(allData);
+        Node n = createTree(mainDataset);
 
         System.out.println("---The Tree--\n");
 
        printTree(n,0);
 
-       String[][] arr=new String[2][allData[0].length];
-       arr[0]=allData[0];
-       arr[1]=allData[18047];
-       matchMaking(n,arr);
-       System.out.println(allData[18047][allData[0].length-1]);
+       String[][] arr=new String[2][mainDataset[0].length];
+       arr[0]= mainDataset[0];
+       arr[1]= mainDataset[18047];
+       parseTreeForResult(n,arr);
+       System.out.println(mainDataset[18047][mainDataset[0].length-1]);
 
-       System.out.println("*Total data= "+(allData.length-1));
+       System.out.println("*Total data= "+(mainDataset.length-1));
     }
 }
