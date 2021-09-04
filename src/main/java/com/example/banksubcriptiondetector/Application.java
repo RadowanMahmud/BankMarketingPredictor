@@ -1,15 +1,14 @@
 package com.example.banksubcriptiondetector;
 
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import com.example.banksubcriptiondetector.knn.*;
+import com.example.banksubcriptiondetector.Decision.*;
 
 import java.io.IOException;
 
@@ -20,6 +19,9 @@ public class Application extends javafx.application.Application {
 
         knnStarter k= new knnStarter();
         k.startMethod();
+
+        Decisiontree d= new Decisiontree();
+        d.StartDecisionTree("data.csv");
 
         GridPane mainlayout = new GridPane();
         mainlayout.setAlignment(Pos.CENTER);
