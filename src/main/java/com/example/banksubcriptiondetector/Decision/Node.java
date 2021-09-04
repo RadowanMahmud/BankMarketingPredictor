@@ -5,6 +5,6 @@ import java.util.Map;
 
 public class Node {
     String attribute,decision;
-    Map<String,Node> nodes=new HashMap<>();
+    Map<String,Node> childNodes =new HashMap<>();
     boolean leaf;
 }

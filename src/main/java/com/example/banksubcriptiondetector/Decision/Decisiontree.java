@@ -1,6 +1,5 @@
 package com.example.banksubcriptiondetector.Decision;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -10,7 +9,7 @@ public class Decisiontree {
   Map<String, Integer> categoryMap = new HashMap<>();
   int dataRows=0, dataColumns;
 
-  public void getDataRows(String file) throws IOException {
+    public void getDataRows(String file) throws IOException {
       BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 
       while ( bufferedReader.readLine()!= null) {
@@ -18,7 +17,7 @@ public class Decisiontree {
       }
   }
 
-  public void readData(String file) throws IOException {
+    public void readData(String file) throws IOException {
 
         getDataRows(file);
       BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -46,40 +45,38 @@ public class Decisiontree {
       dataColumns=arr.length;
       bufferedReader.close();
   }
+  
     public double calculateTotalEntropy(Map<String,Integer>categoryMap, String[][] table){
 
-      Map<String, Integer> copyCat= new HashMap<>(categoryMap);
+      Map<String, Integer> copyClassCategoryMap= new HashMap<>(categoryMap);
 
       for(int i=1; i<table.length;i++)
-          copyCat.put(table[i][dataColumns-1], copyCat.get(table[i][dataColumns-1])+1);
+          copyClassCategoryMap.put(table[i][dataColumns-1], copyClassCategoryMap.get(table[i][dataColumns-1])+1);
 
-        double entropy = 0; int hCheck=0;
-
-        for (Map.Entry<String, Integer> entry : copyCat.entrySet()) {
+        double entropy = 0;
+        int Check=0;
+        for (Map.Entry<String, Integer> entry : copyClassCategoryMap.entrySet()) {
 
             double catFrequency = entry.getValue();
 
-            if(catFrequency>0) hCheck++;
+            if(catFrequency>0) Check++;
 
             entropy+= -((catFrequency/(table.length-1))*(Math.log(catFrequency/(table.length-1))/Math.log(2)));
 
         }
-        if(hCheck==1) return 0;
+        if(Check==1) return 0;
 
         return entropy;
     }
 
-  public double calculateBranchEntropy(Map<String, Integer> catMap, double branchFreq, int rows){
+  public double calculateBranchEntropy(Map<String, Integer> categoryMap, double featureFrequency, int rows){
 
       double entropy = 0;
-      for (Map.Entry<String, Integer> entry : catMap.entrySet()) {
-
-         double catFrequency = entry.getValue();
-
-         entropy+= -((catFrequency/branchFreq)*(Math.log(catFrequency/branchFreq)/Math.log(2)));
-
+      for (Map.Entry<String, Integer> entry : categoryMap.entrySet()) {
+         double categoryFrequency = entry.getValue();
+         entropy+= -((categoryFrequency/featureFrequency)*(Math.log(categoryFrequency/featureFrequency)/Math.log(2)));
       }
-      return entropy*(branchFreq/(rows-1));
+      return entropy*(featureFrequency/(rows-1));
 
   }
 
@@ -97,8 +94,9 @@ public class Decisiontree {
 
       for(int i=1;i<trow;i++){
           if(parentTable[i][column].equals(branchName)){
-              for (int j=0;j<dataColumns;j++)
+              for (int j=0;j<dataColumns;j++){
                   newTable[temp][j]= parentTable[i][j];
+              }
               temp++;
           }
       }
@@ -174,7 +172,7 @@ public class Decisiontree {
      // System.out.println("\nSelected Feature: "+n.attribute+"\n");
       for(String s: temp){
           String[][] reducedTable= makeChildTable(workingDataset, s, newTColumn);
-          n.nodes.put(s, createTree(reducedTable));
+          n.childNodes.put(s, createTree(reducedTable));
       }
 
       return n;
@@ -189,7 +187,7 @@ public class Decisiontree {
           depth++;
           System.out.print(node.attribute);
 
-          for(Map.Entry<String,Node> entry : node.nodes.entrySet()){
+          for(Map.Entry<String,Node> entry : node.childNodes.entrySet()){
               System.out.println("");
 
               for (int i=0;i<depth;i++) System.out.print("\t");
@@ -214,7 +212,7 @@ public class Decisiontree {
             }
             if(node.attribute.equals(arr[0][i])){
 
-                for (Map.Entry<String, Node> entry : node.nodes.entrySet()) {
+                for (Map.Entry<String, Node> entry : node.childNodes.entrySet()) {
                     String key = entry.getKey();
                     Node nord = entry.getValue();
                     if(key.equals(arr[1][i])){
@@ -243,6 +241,6 @@ public class Decisiontree {
        parseTreeForResult(n,arr);
        System.out.println(mainDataset[18047][mainDataset[0].length-1]);
 
-       System.out.println("*Total data= "+(mainDataset.length-1));
+       // System.out.println("*Number of data= "+(mainDataset.length-1));
     }
 }
