@@ -3,11 +3,8 @@ package com.example.banksubcriptiondetector;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import com.example.banksubcriptiondetector.knn.*;
 import com.example.banksubcriptiondetector.Decision.*;
@@ -255,7 +252,14 @@ public class Application extends javafx.application.Application {
             arr[10] = (Double.parseDouble(ci.getText()));
 
             try {
-                System.out.println(k.test(arr));
+                String res =k.test(arr);
+                if(res.equals("yes")){
+                    Alert alert =  new Alert(Alert.AlertType.CONFIRMATION, "Yes! Our System Identifies The person as a potential client", ButtonType.OK);
+                    alert.show();
+                }else{
+                    Alert alert =  new Alert(Alert.AlertType.INFORMATION, "The chances are low, You may give a try", ButtonType.OK);
+                    alert.show();
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
