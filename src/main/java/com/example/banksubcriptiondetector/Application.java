@@ -277,7 +277,7 @@ public class Application extends javafx.application.Application {
             // String input =
         });
 
-        mainlayout.add(new Label("Welcome To Bank Marketing Prediction Software"), 0, 0);
+        mainlayout.add(new Label("Welcome To Bank TeleMarketing Success Prediction Software"), 0, 0);
         Button predictionButton = new Button("Classification");
         predictionButton.setOnAction(e -> primaryStage.setScene(classificationScene));
         mainlayout.add(predictionButton,0,1);
@@ -286,7 +286,7 @@ public class Application extends javafx.application.Application {
         mainlayout.add(decisionButton,0,3);
         //mainlayout.getChildren().addAll(label1, button);
 
-        primaryStage.setTitle("Bank Marketing Predictions");
+        primaryStage.setTitle("Bank Telemarketing Predictions");
         primaryStage.setScene(mainScene);
         primaryStage.show();
     }

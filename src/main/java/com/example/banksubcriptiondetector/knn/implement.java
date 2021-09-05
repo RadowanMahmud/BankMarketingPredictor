@@ -140,12 +140,12 @@ public class implement {
             if(s.equals("yes"))
             {
                 count[0]++;
-                weight[0]+=(getKthDistance(sortedDistance, 10)-m.getValue())/(getKthDistance(sortedDistance, 10)-getKthDistance(sortedDistance, 1));
+                weight[0]+= 1.0/(m.getValue()+1);
             }
             else if(s.equals("no"))
             {
                 count[1]++;
-                weight[1]+=(getKthDistance(sortedDistance, 10)-m.getValue())/(getKthDistance(sortedDistance, 10)-getKthDistance(sortedDistance, 1));
+                weight[1]+= 1.0/(m.getValue()+1);
             }
             n++;
 

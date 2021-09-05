@@ -21,7 +21,7 @@ public class knnStarter {
             // System.out.println(accur(arr)*100+"%");
         }
 
-        System.out.println("Accur is "+(sum/10)*100+"%");
+        System.out.println((sum/10)*100+"%");
     }
     public static double accur(int[] arr){
         double count=0;

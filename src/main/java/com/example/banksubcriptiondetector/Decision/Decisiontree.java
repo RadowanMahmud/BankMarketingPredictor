@@ -199,9 +199,6 @@ public class Decisiontree {
 
     public String parseTreeForResult(Node node, String[][] arr){
         if(node.leaf){
-            //System.out.println();
-//            System.out.println("Answer:"+node.decision);
-//            answerUponTest=node.decision;
             leaf=true;
             return node.decision;
         }
@@ -275,7 +272,7 @@ public class Decisiontree {
                 }
             }
             double accur = rescount/testDatarow;
-            System.out.println(accur*100);
+            System.out.println("Accuracy is "+accur*100+"%");
             start=null;
     }
 
