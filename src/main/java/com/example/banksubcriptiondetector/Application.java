@@ -20,10 +20,10 @@ public class Application extends javafx.application.Application {
         //FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("hello-view.fxml"));
 
         knnStarter k= new knnStarter();
-       // k.startMethod();
+        k.startMethod();
 
         Decisiontree d= new Decisiontree();
-         d.StartDecisionTree("data.csv");
+        d.StartDecisionTree("data.csv");
 
         GridPane mainlayout = new GridPane();
         mainlayout.setAlignment(Pos.CENTER);
@@ -220,6 +220,17 @@ public class Application extends javafx.application.Application {
         classificationlayout.add(new Label("Previous Contacts(0-4):"), 0, 8);
         TextField pc = new TextField();
         classificationlayout.add(pc, 1, 8);
+        classificationlayout.add(new Label("Price Index:"), 0, 9);
+        TextField pi = new TextField();
+        classificationlayout.add(pi, 1, 9);
+        classificationlayout.add(new Label("Confidence Index(Value in -):"), 0, 10);
+        TextField ci = new TextField();
+        classificationlayout.add(ci, 1, 10);
+        Button SubmitClass = new Button("Submit");
+        classificationlayout.add(SubmitClass,1,11);
+        SubmitClass.setOnAction(e -> {
+            System.out.println("Submit clicked");
+        });
 
         mainlayout.add(new Label("Welcome To Bank Marketing Prediction Software"), 0, 0);
         Button predictionButton = new Button("Classification");
