@@ -11,7 +11,6 @@ public class run {
 
     public int[]  dataTesting(int strt,implement knn) throws NumberFormatException, IOException {
 
-        // knn.RandomizeArray();
         int k=0;
 
         try {
@@ -47,10 +46,14 @@ public class run {
                 i++;
 
                 if(chk.equals(cls)){
-                    result[k]=10;
+                    if(chk.equals("yes")){
+                        result[k]=5;
+                    }else result[k]=10;
                 }
                 else{
-                    result[k]=-10;
+                    if(chk.equals("yes")){
+                        result[k]=-5;
+                    }else result[k]=-10;
                     // System.out.println(i+" "+cls+" "+chk);
                 }
                 k++;
