@@ -121,6 +121,11 @@ public class Application extends javafx.application.Application {
         Button backButton2 = new Button("<=");
         backButton2.setOnAction(e -> primaryStage.setScene(mainScene));
         predictionLayout.add(backButton2,5,0);
+        Button print = new Button("Print Tree");
+        print.setOnAction(e -> {
+            d.print();
+        });
+        predictionLayout.add(print,4,0);
         predictionLayout.add(new Label("SelectJob:"), 0, 1);
         predictionLayout.add(jobComBox,1,1);
         predictionLayout.add(new Label("Marital Status:"), 0, 2);

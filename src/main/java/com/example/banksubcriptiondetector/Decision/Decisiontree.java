@@ -181,6 +181,10 @@ public class Decisiontree {
       return n;
   }
 
+  public void print(){
+        printTree(rootNode,0);
+        System.out.println();
+  }
   public void printTree(Node node, int depth){
       if(node.leaf){
           System.out.print(node.decision);
@@ -190,8 +194,10 @@ public class Decisiontree {
           System.out.print(node.attribute);
           for(Map.Entry<String,Node> entry : node.childNodes.entrySet()){
               System.out.println("");
-              for (int i=0;i<depth;i++) System.out.print("\t");
-              System.out.print("--"+entry.getKey()+"--> ");
+              for (int i=0;i<depth;i++){
+                  System.out.print("\t");
+              }
+              System.out.print(entry.getKey()+"=> ");
               printTree(entry.getValue(),depth+2);
           }
       }

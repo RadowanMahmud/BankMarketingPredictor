@@ -3,13 +3,13 @@ package com.example.banksubcriptiondetector.knn;
 import java.io.IOException;
 
 public class knnStarter {
-    public static int numberOfDataRows=1000;
-    public static int numberOfTestRows=100;
+    public static int numberOfDataRows=1500;
+    public static int numberOfTestRows=150;
     run k_nn=new run();
     implement loadedData=new implement();
 
     public void startMethod() throws IOException {
-        String fileName= "withconf.txt";
+        String fileName= "keep.txt";
         loadedData.loadtestData(fileName);
 
         //Now running crossValidation
