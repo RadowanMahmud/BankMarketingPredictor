@@ -183,21 +183,16 @@ public class Decisiontree {
   }
 
   public void printTree(Node node, int depth){
-
       if(node.leaf){
           System.out.print(node.decision);
       }
       else {
           depth++;
           System.out.print(node.attribute);
-
           for(Map.Entry<String,Node> entry : node.childNodes.entrySet()){
               System.out.println("");
-
               for (int i=0;i<depth;i++) System.out.print("\t");
-
               System.out.print("--"+entry.getKey()+"--> ");
-
               printTree(entry.getValue(),depth+2);
           }
       }
@@ -205,7 +200,7 @@ public class Decisiontree {
 
     public String parseTreeForResult(Node node, String[][] arr){
         if(node.leaf){
-            System.out.println();
+            //System.out.println();
 //            System.out.println("Answer:"+node.decision);
 //            answerUponTest=node.decision;
             leaf=true;
@@ -244,24 +239,56 @@ public class Decisiontree {
         return "Ok";
     }
 
+    public void accuracy(int fold){
+            int testDatarow=(dataRows-1)/fold;
+            String[][] testData=new String[testDatarow][dataColumns];
+            int trainDatarow=(dataRows)-testDatarow;
+            String[][] trainData=new String[trainDatarow][dataColumns];
+            boolean[] chkerArray=new boolean[dataRows];
+            Random r=new Random();
+            for(int j=0;j<testDatarow;j++){
+                int idx=r.nextInt(dataRows);
+                if(idx==0 || chkerArray[idx]){
+                    j--;
+                    continue;
+                }else{
+                    testData[j]=mainDataset[idx];
+                }
+            }
+            System.out.println(testDatarow+" "+trainDatarow);
+            trainData[0]=mainDataset[0];
+            for(int j=1,k=1;j<dataRows && k<trainDatarow;j++){
+                if(!chkerArray[j]){
+                    trainData[k]=mainDataset[j];
+                    k++;
+                }
+            }
+            Node start=createTree(trainData);
+            double rescount=0;
+
+            for(int j=0;j<testDatarow;j++){
+                String[][] arr=new String[2][mainDataset[0].length];
+                arr[0]= mainDataset[0];
+                arr[1]= testData[j];
+                String res=parseTreeForResult(rootNode,arr);
+                if(testData[j][dataColumns-1].equals(res)){
+                    rescount++;
+                }
+            }
+            double accur = rescount/testDatarow;
+            System.out.println(accur*100);
+    }
+
     public void StartDecisionTree(String file) throws IOException {
-
         readData(file);
-
         rootNode = createTree(mainDataset);
-
-        //System.out.println("---The Tree--\n");
-
-       // printTree(n,0);
-
-       String[][] arr=new String[2][mainDataset[0].length];
-       arr[0]= mainDataset[0];
-       arr[1]= mainDataset[18047];
+        String[][] arr=new String[2][mainDataset[0].length];
+        arr[0]= mainDataset[0];
+        arr[1]= mainDataset[18047];
         String res=parseTreeForResult(rootNode,arr);
         System.out.println("Answer:"+res);
         leaf=false;
-       System.out.println(mainDataset[18047][mainDataset[0].length-1]);
-
-       // System.out.println("*Number of data= "+(mainDataset.length-1));
+        System.out.println(mainDataset[18047][mainDataset[0].length-1]);
+        accuracy(5);
     }
 }
