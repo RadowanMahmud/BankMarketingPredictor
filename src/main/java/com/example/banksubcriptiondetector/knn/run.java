@@ -66,5 +66,9 @@ public class run {
             return result;
         }
     }
+
+    public String singleTesting(double[] test,implement knn) throws IOException {
+        return knn.test(9999,test);
+    }
 }
 

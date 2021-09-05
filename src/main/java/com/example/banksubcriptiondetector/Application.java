@@ -25,6 +25,8 @@ public class Application extends javafx.application.Application {
         Decisiontree d= new Decisiontree();
         d.StartDecisionTree("data.csv");
 
+        InputConversion convertInput = new InputConversion();
+
         GridPane mainlayout = new GridPane();
         mainlayout.setAlignment(Pos.CENTER);
         mainlayout.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
@@ -202,6 +204,13 @@ public class Application extends javafx.application.Application {
         loanComboxClassifier.getItems().add("yes");
         loanComboxClassifier.getItems().add("no");
 
+        ComboBox dayComBoxClassifier = new ComboBox();
+        dayComBoxClassifier.getItems().add("mon");
+        dayComBoxClassifier.getItems().add("tue");
+        dayComBoxClassifier.getItems().add("wed");
+        dayComBoxClassifier.getItems().add("thu");
+        dayComBoxClassifier.getItems().add("fri");
+
         classificationlayout.add(new Label("Age:"), 0, 1);
         TextField age = new TextField();
         classificationlayout.add(age, 1, 1);
@@ -217,19 +226,40 @@ public class Application extends javafx.application.Application {
         classificationlayout.add(housingComboxClassifier,1,6);
         classificationlayout.add(new Label("Loan:"),0,7);
         classificationlayout.add(loanComboxClassifier,1,7);
-        classificationlayout.add(new Label("Previous Contacts(0-4):"), 0, 8);
+        classificationlayout.add(new Label("Day Of Week:"),0,8);
+        classificationlayout.add(dayComBoxClassifier,1,8);
+        classificationlayout.add(new Label("Previous Contacts(0-4):"), 0, 9);
         TextField pc = new TextField();
-        classificationlayout.add(pc, 1, 8);
-        classificationlayout.add(new Label("Price Index:"), 0, 9);
+        classificationlayout.add(pc, 1, 9);
+        classificationlayout.add(new Label("Price Index:"), 0, 10);
         TextField pi = new TextField();
-        classificationlayout.add(pi, 1, 9);
-        classificationlayout.add(new Label("Confidence Index(Value in -):"), 0, 10);
+        classificationlayout.add(pi, 1, 10);
+        classificationlayout.add(new Label("Confidence Index:"), 0, 11);
         TextField ci = new TextField();
-        classificationlayout.add(ci, 1, 10);
+        classificationlayout.add(ci, 1, 11);
         Button SubmitClass = new Button("Submit");
-        classificationlayout.add(SubmitClass,1,11);
+        classificationlayout.add(SubmitClass,1,12);
         SubmitClass.setOnAction(e -> {
             System.out.println("Submit clicked");
+            double[] arr=new double[11];
+            arr[0] = (Double.parseDouble(age.getText()))/10;
+            arr[1] = convertInput.convertJobsForClassifier((String) jobComBoxclassifir.getValue());
+            arr[2] = convertInput.convertMaritalStatus((String) marriageComboxClassifier.getValue());
+            arr[3] = convertInput.convertEducation((String) educationComboxClassifier.getValue());
+            arr[4] = convertInput.convertbool((String) defaultComboxClassfier.getValue());
+            arr[5] = convertInput.convertbool((String) housingComboxClassifier.getValue());
+            arr[6] = convertInput.convertbool((String) loanComboxClassifier.getValue());
+            arr[7] = convertInput.convertDay((String) dayComBoxClassifier.getValue());
+            arr[8] = (Double.parseDouble(pc.getText()));
+            arr[9] = (Double.parseDouble(pi.getText()))/100;
+            arr[10] = (Double.parseDouble(ci.getText()));
+
+            try {
+                System.out.println(k.test(arr));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            // String input =
         });
 
         mainlayout.add(new Label("Welcome To Bank Marketing Prediction Software"), 0, 0);

@@ -5,16 +5,14 @@ import java.io.IOException;
 public class knnStarter {
     public static int numberOfDataRows=1500;
     public static int numberOfTestRows=150;
+    run k_nn=new run();
+    implement loadedData=new implement();
 
     public void startMethod() throws IOException {
         String fileName= "keep.txt";
-        implement loadedData=new implement();
         loadedData.loadtestData(fileName);
 
         //Now running crossValidation
-
-        run k_nn=new run();
-
         int[] arr=new int[numberOfTestRows];
         double sum=0;
         for(int startIndex=0;startIndex<numberOfDataRows;startIndex=startIndex+numberOfTestRows){
@@ -35,5 +33,9 @@ public class knnStarter {
         }
         //System.out.println("count is "+ count);
         return count/numberOfTestRows;
+    }
+
+    public String test(double[] test) throws IOException {
+        return k_nn.singleTesting(test,loadedData);
     }
 }
