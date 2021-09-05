@@ -235,7 +235,7 @@ public class Decisiontree {
         String res=parseTreeForResult(rootNode,arr);
         System.out.println("Answer:"+res);
         leaf=false;
-        return "Ok";
+        return res;
     }
 
     public void accuracy(int fold){

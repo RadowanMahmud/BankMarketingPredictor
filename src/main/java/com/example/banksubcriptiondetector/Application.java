@@ -144,7 +144,7 @@ public class Application extends javafx.application.Application {
         Button Submit = new Button("Submit");
         predictionLayout.add(Submit,1,11);
         Submit.setOnAction(e -> {
-            System.out.println("Submit clicked");
+            // System.out.println("Submit clicked");
             String[] arr=new String[11];
             arr[0] = (String) jobComBox.getValue();
             arr[1] = (String) marriageCombox.getValue();
@@ -158,7 +158,18 @@ public class Application extends javafx.application.Application {
             arr[9] = (String) preResultCombox.getValue();
             arr[10] = "decision";
 
-            d.getPrediction(arr);
+            String res = d.getPrediction(arr);
+            if(res.equals("yes")){
+                Alert alert =  new Alert(Alert.AlertType.CONFIRMATION, "Yes! Our System Identifies The person as a potential client", ButtonType.OK);
+                alert.show();
+            }else if(res.equals("no")){
+                Alert alert =  new Alert(Alert.AlertType.INFORMATION, "The chances are low for the user to subscribe", ButtonType.OK);
+                alert.show();
+            } else{
+                Alert alert =  new Alert(Alert.AlertType.INFORMATION, "This is an exceptional case. So the chances are equal", ButtonType.OK);
+                alert.show();
+            }
+
         });
 
 
