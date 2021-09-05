@@ -112,8 +112,8 @@ public class Decisiontree {
       int rows=workingDataset.length;
       Set<String> temp = new HashSet<>();
       Set<String>features = new HashSet<>();
-      int currentColumnNumber=0, newTColumn=1;
-      double maxGain = 0.0;
+      int currentColumnNumber=0, newSelectedColumn=1;
+      double maximumGain = 0.0;
       
       double totalEntropy= calculateTotalEntropy(categoryMap,workingDataset);
 
@@ -160,10 +160,10 @@ public class Decisiontree {
               
           }
 
-          if( (totalEntropy-featureEntropy) > maxGain){
+          if( (totalEntropy-featureEntropy) > maximumGain){
               temp.clear();
-              maxGain = totalEntropy-featureEntropy;
-              newTColumn = currentColumnNumber;
+              maximumGain = totalEntropy-featureEntropy;
+              newSelectedColumn = currentColumnNumber;
               n.attribute = workingDataset[0][currentColumnNumber];
               n.leaf=false;
 
@@ -173,9 +173,8 @@ public class Decisiontree {
           currentColumnNumber++;
           features.clear();
       }
-     // System.out.println("\nSelected Feature: "+n.attribute+"\n");
       for(String s: temp){
-          String[][] reducedTable= makeChildTable(workingDataset, s, newTColumn);
+          String[][] reducedTable= makeChildTable(workingDataset, s, newSelectedColumn);
           n.childNodes.put(s, createTree(reducedTable));
       }
 
@@ -277,6 +276,7 @@ public class Decisiontree {
             }
             double accur = rescount/testDatarow;
             System.out.println(accur*100);
+            start=null;
     }
 
     public void StartDecisionTree(String file) throws IOException {

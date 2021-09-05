@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
@@ -162,11 +163,63 @@ public class Application extends javafx.application.Application {
         });
 
 
-        classificationlayout.add(new Label("Classification"), 0, 0);
+        classificationlayout.add(new Label("Classification"), 1, 0);
         Button backButton = new Button("<=");
         backButton.setOnAction(e -> primaryStage.setScene(mainScene));
         classificationlayout.add(backButton,5,0);
 
+        ComboBox jobComBoxclassifir = new ComboBox();
+        jobComBoxclassifir.getItems().add("management");
+        jobComBoxclassifir.getItems().add("student");
+        jobComBoxclassifir.getItems().add("housemaid");
+        jobComBoxclassifir.getItems().add("admin");
+        jobComBoxclassifir.getItems().add("technician");
+        jobComBoxclassifir.getItems().add("retired");
+        jobComBoxclassifir.getItems().add("services");
+        jobComBoxclassifir.getItems().add("business");
+        jobComBoxclassifir.getItems().add("unemployed");
+
+        ComboBox marriageComboxClassifier = new ComboBox();
+        marriageComboxClassifier.getItems().add("single");
+        marriageComboxClassifier.getItems().add("married");
+        marriageComboxClassifier.getItems().add("divorced");
+
+        ComboBox educationComboxClassifier = new ComboBox();
+        educationComboxClassifier.getItems().add("university");
+        educationComboxClassifier.getItems().add("school");
+        educationComboxClassifier.getItems().add("professional");
+        educationComboxClassifier.getItems().add("basic");
+
+        ComboBox defaultComboxClassfier = new ComboBox();
+        defaultComboxClassfier.getItems().add("yes");
+        defaultComboxClassfier.getItems().add("no");
+
+        ComboBox housingComboxClassifier = new ComboBox();
+        housingComboxClassifier.getItems().add("yes");
+        housingComboxClassifier.getItems().add("no");
+
+        ComboBox loanComboxClassifier = new ComboBox();
+        loanComboxClassifier.getItems().add("yes");
+        loanComboxClassifier.getItems().add("no");
+
+        classificationlayout.add(new Label("Age:"), 0, 1);
+        TextField age = new TextField();
+        classificationlayout.add(age, 1, 1);
+        classificationlayout.add(new Label("SelectJob:"), 0, 2);
+        classificationlayout.add(jobComBoxclassifir,1,2);
+        classificationlayout.add(new Label("Marital Status:"),0,3);
+        classificationlayout.add(marriageComboxClassifier,1,3);
+        classificationlayout.add(new Label("Education:"),0,4);
+        classificationlayout.add(educationComboxClassifier,1,4);
+        classificationlayout.add(new Label("Default:"),0,5);
+        classificationlayout.add(defaultComboxClassfier,1,5);
+        classificationlayout.add(new Label("Housing:"),0,6);
+        classificationlayout.add(housingComboxClassifier,1,6);
+        classificationlayout.add(new Label("Loan:"),0,7);
+        classificationlayout.add(loanComboxClassifier,1,7);
+        classificationlayout.add(new Label("Previous Contacts(0-4):"), 0, 8);
+        TextField pc = new TextField();
+        classificationlayout.add(pc, 1, 8);
 
         mainlayout.add(new Label("Welcome To Bank Marketing Prediction Software"), 0, 0);
         Button predictionButton = new Button("Classification");
